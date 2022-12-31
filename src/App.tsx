@@ -1,11 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import {Comments} from "./components/comments";
+import SuperButton from "./components/SuperButton";
+import {getComments} from "./dal/api";
+
+export type CommentType = {
+    postId: number
+    id: number
+    name: string
+    email: string
+    body: string
+}
 
 function App() {
-  return (
-   <div></div>
-  );
+    const [comments, setComments] = useState<CommentType[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const getCommentsHandler = () => {
+        setIsLoading(true)
+        getComments.comments()
+            .then(result => setComments(result.data))
+        setIsLoading(false)
+    }
+    const deleteCommentsHandler = () => setComments([])
+    return <div>
+        <div>
+            <SuperButton isLoading={isLoading} title={'add comments'} callBack={getCommentsHandler}/>
+            <SuperButton isLoading={isLoading} title={'del comments'} callBack={deleteCommentsHandler}/>
+            <Comments isLoading={isLoading} comments={comments}/>
+        </div>
+    </div>
 }
 
 export default App;
