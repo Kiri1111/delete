@@ -1,17 +1,23 @@
 import React from 'react';
 import {CommentType} from "../App";
+import SuperButton from "./SuperButton";
 
 type CommentsPropsType = {
     comments: CommentType[]
     isLoading: boolean
+    delComment: (idComment: number) => void
 }
 export const Comments = (props: CommentsPropsType) => {
+
     return (
         <div>
             <h1>comments</h1>
             {props.isLoading
                 ? <h2>'one moment please.....'</h2>
                 : <div>{props.comments.map(el => {
+                        const onClickHandler = () => {
+                            props.delComment(el.id)
+                        }
                         return (
                             <div>
                             <span key={el.id}>
@@ -20,6 +26,7 @@ export const Comments = (props: CommentsPropsType) => {
                                 <span>
                                 {el.name}
                             </span>
+                                <SuperButton callBack={onClickHandler} title={'del'} isLoading={props.isLoading}/>
                             </div>
                         )
                     }

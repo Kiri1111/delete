@@ -22,11 +22,14 @@ function App() {
         setIsLoading(false)
     }
     const deleteCommentsHandler = () => setComments([])
+    const deleteOneComment = (idComment: number) => {
+        setComments(comments.filter(el => el.id !== idComment))
+    }
     return <div>
         <div>
             <SuperButton isLoading={isLoading} title={'add comments'} callBack={getCommentsHandler}/>
             <SuperButton isLoading={isLoading} title={'del comments'} callBack={deleteCommentsHandler}/>
-            <Comments isLoading={isLoading} comments={comments}/>
+            <Comments delComment={deleteOneComment} isLoading={isLoading} comments={comments}/>
         </div>
     </div>
 }
