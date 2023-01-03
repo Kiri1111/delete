@@ -7,5 +7,8 @@ const instance = axios.create({
 export const getComments = {
     comments() {
         return instance.get('comments')
+    },
+    delAllComments() {
+        return instance.delete(`posts/1`)
     }
 }

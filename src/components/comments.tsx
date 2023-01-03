@@ -15,18 +15,18 @@ export const Comments = (props: CommentsPropsType) => {
             {props.isLoading
                 ? <h2>'one moment please.....'</h2>
                 : <div>{props.comments.map(el => {
-                        const onClickHandler = () => {
+                        const delOneComment = () => {
                             props.delComment(el.id)
                         }
                         return (
-                            <div>
-                            <span key={el.id}>
+                            <div key={el.id}>
+                            <span>
                                 {el.id}
                             </span>
                                 <span>
                                 {el.name}
                             </span>
-                                <SuperButton callBack={onClickHandler} title={'del'} isLoading={props.isLoading}/>
+                                <SuperButton callBack={delOneComment} title={'del'} isLoading={props.isLoading}/>
                             </div>
                         )
                     }
