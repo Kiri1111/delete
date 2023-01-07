@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Promise</title>
+</head>
+<body>
+<h1>Hello I`am a Promise</h1>
+<script>
+    const myPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            alert('Alert')
+        }, 2000)
+        resolve('Hello')
+        return resolve
+    })
+        .then((res) => {
+            console.log('I`am Resolved Promise' + res)
+        })
+
+</script>
+</body>
+</html>
