@@ -8,42 +8,60 @@
 <script src="axios.js"></script>
 <script src="api.js"></script>
 <script>
-    api.sendStudentsCountToItKamasutra(20)
-        .then(res => {
-            console.log(res)
-            return res
+    // api.sendStudentsCountToItKamasutra(20)
+    //     .then(res => {
+    //         console.log(res)
+    //         return res
+    //     })
+    //     .then(res => {
+    //         console.log(res.data)
+    //         return (res.data)
+    //     })
+    //     .then((data) => {
+    //         console.log(data.message)
+    //
+    //     })
+
+    const loadVacanciesPromiseV = () => {
+        let msVacancies
+        const pr1 = api.getVacanciesCountFromMicrosoft()
+        pr1.then((countMs) => {
+            console.log(countMs.data.vacancies)
+            msVacancies = countMs.data.vacancies
+            return api.getVacanciesCountFromGoogle()
         })
-        .then(res => {
-            console.log(res.data)
-            return (res.data)
-        })
-        .then((data) => {
-            console.log(data.message)
+            .then((countG) => {
+                console.log(countG.data.vacancies)
+                return api.sendStudentsCountToItKamasutra(countG.data.vacancies + msVacancies)
+            })
+            .then((res) => {
+                console.log('res text ', res.data)
+            })
 
-        })
-    const pr1 = api.getVacanciesCountFromMicrosoft()
-        .then(data => {
-            //console.log(data.data.vacancies)
-            return data.data.vacancies;
-        });
+    }
+    loadVacanciesPromiseV()
 
-    const pr2 = api.getVacanciesCountFromGoogle()
-        .then(data => {
-            // console.log(data.data.vacancies)
-            return data.data.vacancies
-        });
+    const loadVacanciesPromiseAsyncV = async () => {
+        
+        let responseMs = await api.getVacanciesCountFromMicrosoft()
+        let responseG = await api.getVacanciesCountFromGoogle()
+        let responseSentStud = await api.sendStudentsCountToItKamasutra(responseMs.data.vacancies + responseG.data.vacancies)
+        console.log(responseSentStud)
+    }
+    loadVacanciesPromiseAsyncV()
+    // let arrVacancies = Promise.all([pr1, pr2])
+    // arrVacancies.then((res) => {
+    //     let gVacancies = res[0].data.vacancies
+    //     let msVacancies = res[1].data.vacancies
+    //     //  console.log('request')
+    //     api.sendStudentsCountToItKamasutra(gVacancies + msVacancies)
+    //         .then(data => {
+    //             //     console.log(data.data)
+    //         });
+    // })
 
-    let arrVacancies = Promise.all([pr1, pr2])
-    arrVacancies.then(res => {
-        return res
-    })
-    console.log(arrVacancies)
-    const res = arrVacancies.reduce((a, b) => a + b, 0)
+    // const res = arrVacancies.reduce((a, b) => a + b, 0)
 
-    api.sendStudentsCountToItKamasutra(res)
-        .then(data => {
-            //     console.log(data)
-        });
 
 </script>
 </body>
