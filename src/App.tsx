@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import './App.css';
 import {Comments} from "./components/comments";
 import SuperButton from "./components/SuperButton";
-import {getComments} from "./dal/api";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
-import {addAllCommentsAC, deleteOneCommentAC} from "./reducers/CommentsReducer";
+import {AppRootStateType, useAppDispatch} from "./store/store";
+import {addAllCommentsTC, delCommentTC, deleteOneCommentAC, InitStateType} from "./reducers/CommentsReducer";
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 export type CommentType = {
     postId: number
@@ -13,22 +14,18 @@ export type CommentType = {
     name: string
     email: string
     body: string
+    isLoading: boolean
 }
 
 function App() {
-    const dispatch = useDispatch()
-    const state = useSelector<AppRootStateType, CommentType[]>(st => st.comments)
+    const state = useSelector<AppRootStateType, InitStateType>(st => st.comments)
+    const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(false)
 
     const getCommentsHandler = () => {
         setIsLoading(true)
-        getComments.comments()
-            .then(result => {
-                dispatch(addAllCommentsAC(result.data))
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        dispatch(addAllCommentsTC())
+        setIsLoading(false)
     }
 
     const deleteAllCommentsHandler = () => {
@@ -39,7 +36,7 @@ function App() {
     }
 
     const deleteOneCommentHandler = (idComment: number) => {
-        dispatch(deleteOneCommentAC(idComment))
+        dispatch(delCommentTC(idComment))
     }
 
     return <div>

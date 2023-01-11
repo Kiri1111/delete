@@ -1,9 +1,10 @@
 import React from 'react';
 import {CommentType} from "../App";
 import SuperButton from "./SuperButton";
+import {InitStateType} from "../reducers/CommentsReducer";
 
 type CommentsPropsType = {
-    comments: CommentType[]
+    comments: InitStateType
     isLoading: boolean
     delComment: (idComment: number) => void
 }
@@ -15,6 +16,7 @@ export const Comments = (props: CommentsPropsType) => {
             {props.isLoading
                 ? <h2>'one moment please.....'</h2>
                 : <div>{props.comments.map(el => {
+
                         const delOneComment = () => {
                             props.delComment(el.id)
                         }
