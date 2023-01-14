@@ -7,6 +7,7 @@ type CommentsPropsType = {
     comments: InitStateType
     isLoading: boolean
     delComment: (idComment: number) => void
+    updateCommentTitle: () => void
 }
 export const Comments = (props: CommentsPropsType) => {
 
@@ -25,7 +26,9 @@ export const Comments = (props: CommentsPropsType) => {
                             <span>
                                 {el.id}
                             </span>
-                                <span>
+                                <span onClick={() => {
+                                    props.updateCommentTitle()
+                                }}>
                                 {el.name}
                             </span>
                                 <SuperButton callBack={delOneComment} title={'del'} isLoading={props.isLoading}/>

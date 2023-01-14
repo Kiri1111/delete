@@ -13,12 +13,15 @@ export const commentsReducer = (state: InitStateType = initialState, action: Act
         case "ADD-COMMENTS": {
             return [...state, ...action.payload.comments]
         }
+        case "UPDATE-COMMENT": {
+            return state.map(el => el.id === action.payload.commentId ? {...el, name: action.payload.title} : el)
+        }
         default:
             return state
     }
 }
 
-export type ActionsType = DeleteOneCommentACType | AddAllCommentsACType
+export type ActionsType = DeleteOneCommentACType | AddAllCommentsACType | UpdateCommentACType
 
 type DeleteOneCommentACType = ReturnType<typeof deleteOneCommentAC>
 export const deleteOneCommentAC = (idComment: number) => ({
@@ -31,6 +34,13 @@ export const addAllCommentsAC = (comments: CommentType[]) => ({
     type: 'ADD-COMMENTS',
     payload: {comments}
 } as const)
+
+type UpdateCommentACType = ReturnType<typeof UpdateCommentAC>
+export const UpdateCommentAC = (commentId: number, title: string) => ({
+    type: 'UPDATE-COMMENT',
+    payload: {commentId, title}
+} as const)
+
 /////thunks//////
 
 export const addAllCommentsTC = (): RootThunkType => async (dispatch) => {
@@ -45,4 +55,7 @@ export const addAllCommentsTC = (): RootThunkType => async (dispatch) => {
 
 export const delCommentTC = (idComment: number): RootThunkType => (dispatch) => {
     dispatch(deleteOneCommentAC(idComment))
+}
+export const updateTitleTC = (title: string): RootThunkType => (dispatch) => {
+    getComments.updateComment(4, title)
 }

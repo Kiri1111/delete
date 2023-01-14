@@ -4,7 +4,13 @@ import {Comments} from "./components/comments";
 import SuperButton from "./components/SuperButton";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/store";
-import {addAllCommentsTC, delCommentTC, deleteOneCommentAC, InitStateType} from "./reducers/CommentsReducer";
+import {
+    addAllCommentsTC,
+    delCommentTC,
+    deleteOneCommentAC,
+    InitStateType,
+    updateTitleTC
+} from "./reducers/CommentsReducer";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 
@@ -38,12 +44,16 @@ function App() {
     const deleteOneCommentHandler = (idComment: number) => {
         dispatch(delCommentTC(idComment))
     }
+    const updateCommentTitle = () => {
+        dispatch(updateTitleTC('New title'))
+    }
 
     return <div>
         <div>
             <SuperButton isLoading={isLoading} title={'add comments'} callBack={getCommentsHandler}/>
             <SuperButton isLoading={isLoading} title={'del comments'} callBack={deleteAllCommentsHandler}/>
-            <Comments delComment={deleteOneCommentHandler} isLoading={isLoading} comments={state}/>
+            <Comments updateCommentTitle={updateCommentTitle} delComment={deleteOneCommentHandler} isLoading={isLoading}
+                      comments={state}/>
         </div>
     </div>
 }
